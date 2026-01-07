@@ -17,6 +17,10 @@
   background-color: var(--background);
 }
 
+input.qrCodesJsonUpload {
+  font-size: inherit;
+}
+
 .qrCodeContainer {
   width: 500px;
 }

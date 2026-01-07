@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://marcos.ac",
+    "mask": 2,
+    "errorCorrectionLevel": "M"
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/When_You_Reach_Me",
+    "mask": 6,
+    "errorCorrectionLevel": "L"
+  }
+]
