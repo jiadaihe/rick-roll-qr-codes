@@ -36,11 +36,6 @@ export default function RoomPage({
     },
   });
 
-  const increment = () => {
-    // Send a message to the server
-    socket.send(JSON.stringify({ type: "increment" }));
-  };
-
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -70,7 +65,6 @@ export default function RoomPage({
       <h2>Role: {role}</h2>
       {gameData && (
         <div>
-          <h2>Count: {gameData.count}</h2>
           <h2>Game state: {gameData.gameState}</h2>
           <h2>Has player: {gameData.hasPlayer ? "yes" : "no"}</h2>
         </div>
@@ -102,12 +96,6 @@ export default function RoomPage({
       ) : (
         <div>
           <h3>You are the joiner - scan or skip!</h3>
-          <button
-            onClick={increment}
-            style={{ padding: "10px 20px", fontSize: "16px" }}
-          >
-            Increment Count
-          </button>
         </div>
       )}
     </div>

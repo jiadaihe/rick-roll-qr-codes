@@ -3,7 +3,6 @@ import Sampler from "@/lib/sampler";
 import type * as Party from "partykit/server";
 
 const INITIAL_GAME_DATA: GameData = {
-  count: 0,
   questionNumber: null,
   score: 0,
   creator: null,
@@ -61,9 +60,7 @@ export default class Server implements Party.Server {
     const data = JSON.parse(message);
 
     // Handle increment message
-    if (data.type === "increment") {
-      this.gameData.count++;
-    } else if (data.type === "upload_qr_codes") {
+    if (data.type === "upload_qr_codes") {
       // Handle QR code upload
       const qrCodes = data.qrCodes as QrCodeData[];
       if (Array.isArray(qrCodes) && qrCodes.length > 0) {

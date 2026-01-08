@@ -20,7 +20,6 @@ export interface QrCodeData {
 }
 
 export interface GameData {
-  count: number;
   questionNumber: number | null;
   score: number;
   creator: string | null;
