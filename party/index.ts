@@ -1,6 +1,7 @@
 import { GameData, GameState, QrCodeData } from "@/types/interfaces";
 import Sampler from "@/lib/sampler";
 import type * as Party from "partykit/server";
+import { generateRandomRickRollQrCode } from "@/lib/randomRickRoll";
 
 const INITIAL_GAME_DATA: GameData = {
   questionNumber: null,
@@ -8,7 +9,8 @@ const INITIAL_GAME_DATA: GameData = {
   creator: null,
   qrCodeData: null,
   gameState: GameState.NOT_STARTED,
-  scanned: false,
+  scanned: null,
+  correct: null,
   hasPlayer: false,
 };
 
@@ -18,6 +20,7 @@ export default class Server implements Party.Server {
   // Room state - stored in memory for this room
   gameData: GameData;
   safeQrCodeSampler: Sampler<QrCodeData> | null = null;
+  isRickRoll: boolean | null = null;
 
   constructor(readonly room: Party.Room) {
     // Create a new copy of the initial game data for this room
@@ -29,11 +32,42 @@ export default class Server implements Party.Server {
   }
 
   nextQuestion() {
+    if (!this.safeQrCodeSampler) {
+      return;
+    }
+    const isRickRoll = Math.random() > 0.5;
+    const qrCodeData = isRickRoll
+      ? generateRandomRickRollQrCode()
+      : this.safeQrCodeSampler.sample();
     this.gameData = {
       ...this.gameData,
       questionNumber: (this.gameData.questionNumber || 0) + 1,
       gameState: GameState.PENDING,
+      qrCodeData: qrCodeData,
+      scanned: null,
+      correct: null,
     };
+    this.isRickRoll = isRickRoll;
+  }
+
+  reset() {
+    if (!this.safeQrCodeSampler) {
+      return;
+    }
+    const isRickRoll = Math.random() > 0.5;
+    const qrCodeData = isRickRoll
+      ? generateRandomRickRollQrCode()
+      : this.safeQrCodeSampler.sample();
+    this.gameData = {
+      ...this.gameData,
+      questionNumber: 1,
+      gameState: GameState.PENDING,
+      qrCodeData: qrCodeData,
+      scanned: null,
+      correct: null,
+      score: 0,
+    };
+    this.isRickRoll = isRickRoll;
   }
 
   onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
@@ -75,6 +109,31 @@ export default class Server implements Party.Server {
       if (this.gameData.gameState === GameState.READY_TO_START) {
         this.nextQuestion();
       }
+    } else if (data.type === "guess") {
+      if (this.gameData.gameState === GameState.PENDING) {
+        const isCorrect = data.scan === !this.isRickRoll;
+        this.gameData = {
+          ...this.gameData,
+          scanned: data.scan,
+          correct: isCorrect,
+          score: this.gameData.score + (isCorrect ? 1 : 0),
+          gameState: GameState.GUESSED,
+        };
+      }
+    } else if (data.type === "next_question") {
+      if (this.gameData.questionNumber === 20) {
+        this.gameData = {
+          ...this.gameData,
+          gameState: GameState.GAME_OVER,
+          qrCodeData: null,
+          correct: null,
+          scanned: null,
+        };
+      } else {
+        this.nextQuestion();
+      }
+    } else if (data.type === "start_over") {
+      this.reset();
     }
 
     // Broadcast updated game data to ALL connections in the room

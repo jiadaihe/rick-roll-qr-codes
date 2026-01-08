@@ -17,7 +17,6 @@ export default function RoomPage({
 
   const [role, setRole] = useState<"creator" | "joiner" | null>(null);
   const [gameData, setGameData] = useState<GameData | null>(null);
-  const [qrCodeData] = useState<QrCodeData>(generateRandomRickRollQrCode());
 
   // This hook creates a WebSocket connection to your PartyKit server
   // It automatically handles reconnection and connection state
@@ -55,6 +54,18 @@ export default function RoomPage({
     socket.send(JSON.stringify({ type: "start_game" }));
   };
 
+  const guess = (scan: boolean) => {
+    socket.send(JSON.stringify({ type: "guess", scan }));
+  };
+
+  const nextQuestion = () => {
+    socket.send(JSON.stringify({ type: "next_question" }));
+  };
+
+  const startOver = () => {
+    socket.send(JSON.stringify({ type: "start_over" }));
+  };
+
   if (!role) {
     return <div style={{ padding: "20px" }}>Connecting...</div>;
   }
@@ -67,6 +78,24 @@ export default function RoomPage({
         <div>
           <h2>Game state: {gameData.gameState}</h2>
           <h2>Has player: {gameData.hasPlayer ? "yes" : "no"}</h2>
+          <h2>Question number: {gameData.questionNumber}</h2>
+          <h2>Score: {gameData.score}</h2>
+          <h2>
+            Action taken:{" "}
+            {gameData.scanned === null
+              ? "N/A"
+              : gameData.scanned
+              ? "Scanned"
+              : "Skipped"}
+          </h2>
+          <h2>
+            Was correct?{" "}
+            {gameData.correct === null
+              ? "N/A"
+              : gameData.correct
+              ? "YES! :D"
+              : "No :("}
+          </h2>
         </div>
       )}
 
@@ -85,17 +114,43 @@ export default function RoomPage({
           {gameData?.gameState === GameState.READY_TO_START && (
             <button onClick={start}>Start</button>
           )}
-          <div style={{ maxWidth: "300px" }}>
-            <QrCode qrCodeData={qrCodeData} />
-          </div>
-          <div style={{ marginTop: "20px" }}>
-            <div>URL: {qrCodeData.url}</div>
-            <div>Error correction: {qrCodeData.errorCorrectionLevel}</div>
-          </div>
+          {gameData?.qrCodeData && (
+            <div>
+              <div style={{ maxWidth: "300px" }}>
+                <QrCode qrCodeData={gameData.qrCodeData} />
+              </div>
+              <div style={{ marginTop: "20px" }}>
+                <div>URL: {gameData.qrCodeData.url}</div>
+                <div>
+                  Error correction: {gameData.qrCodeData.errorCorrectionLevel}
+                </div>
+              </div>
+            </div>
+          )}
+          {gameData?.gameState === GameState.GAME_OVER && (
+            <div>
+              <h1>Game over! Score: {gameData.score}</h1>
+              <button onClick={startOver}>Start over</button>
+            </div>
+          )}
         </div>
       ) : (
         <div>
           <h3>You are the joiner - scan or skip!</h3>
+          {gameData?.gameState === GameState.PENDING ? (
+            <div>
+              <button onClick={() => guess(true)}>Scan</button>
+              <button onClick={() => guess(false)}>Skip</button>
+            </div>
+          ) : gameData?.gameState === GameState.GUESSED ? (
+            <button onClick={nextQuestion}>Next</button>
+          ) : gameData?.gameState === GameState.GAME_OVER ? (
+            <div>
+              <h1>Game over! Score {gameData.score}</h1>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       )}
     </div>

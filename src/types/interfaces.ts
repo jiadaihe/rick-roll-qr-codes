@@ -26,5 +26,6 @@ export interface GameData {
   qrCodeData: QrCodeData | null;
   gameState: GameState;
   scanned: boolean | null;
+  correct: boolean | null;
   hasPlayer: boolean;
 }
