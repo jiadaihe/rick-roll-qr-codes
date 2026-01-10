@@ -2,43 +2,63 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
+import { classes, ROOM_CODE_LETTERS } from "@/lib/util";
+import Image from "next/image";
 
 export default function RoomsPage() {
-  const [roomCode, setRoomCode] = useState("");
   const router = useRouter();
 
   // Generate a random 6-character room code
   const createRoom = () => {
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    let code = "";
+    for (let i = 0; i < 6; i++) {
+      code += ROOM_CODE_LETTERS.charAt(
+        Math.floor(Math.random() * ROOM_CODE_LETTERS.length)
+      );
+    }
     router.push(`/room/${code}`);
   };
 
-  const joinRoom = () => {
-    if (roomCode.trim()) {
-      router.push(`/room/${roomCode.trim().toUpperCase()}`);
-    }
-  };
-
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>QR Code Game</h1>
-
-      <div style={{ marginTop: "40px" }}>
-        <h2>Create New Room</h2>
-        <button onClick={createRoom}>Create Room</button>
-      </div>
-
-      <div style={{ marginTop: "40px" }}>
-        <h2>Join Existing Room</h2>
-        <input
-          type="text"
-          placeholder="Enter room code"
-          value={roomCode}
-          onChange={(e) => setRoomCode(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && joinRoom()}
-          style={{ padding: "8px", marginRight: "10px" }}
-        />
-        <button onClick={joinRoom}>Join Room</button>
+    <div className={styles.pageOuterContainer}>
+      <div className={styles.pageInnerContainer}>
+        <div className={styles.centerContent}>
+          <h1 className={styles.title}>QRICK QROLL</h1>
+        </div>
+        <div className={styles.centerContent}>
+          <Image
+            src="/rick-roll.gif"
+            alt="Rick roll"
+            width={300}
+            height={300}
+            loading="eager"
+          />
+        </div>
+        <div className={styles.centerContent}>
+          <button
+            onClick={createRoom}
+            className={classes(styles.button, styles.largeButton)}
+          >
+            Create room
+          </button>
+        </div>
+        <div className={styles.description}>
+          A bespoke website created by{" "}
+          <a href="https://marcos.ac" target="_blank">
+            Marcos Acosta
+          </a>{" "}
+          to win a bet he made with Jiadai He that he could discriminate Rick
+          Roll QR codes from non-Rick Roll QR codes from sight alone with 95%
+          accuracy. Read the exact terms{" "}
+          <a
+            href="https://docs.google.com/document/d/1oJakuWIx8AXTyerasxtlfZZnxzDXphE85znXyTfuHXI/edit?tab=t.0"
+            target="_blank"
+          >
+            here
+          </a>
+          .
+        </div>
       </div>
     </div>
   );
