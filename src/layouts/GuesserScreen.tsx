@@ -63,21 +63,21 @@ export default function GuesserScreen(props: GuesserScreenProps) {
             width={300}
             height={300}
           />
+          <div className={styles.explanation}>
+            {props.gameData.scanned && props.gameData.correct
+              ? "correct! that qr code was perfectly safe."
+              : props.gameData.scanned && !props.gameData.correct
+              ? "you fool! you've been rick rolled!"
+              : !props.gameData.scanned && props.gameData.correct
+              ? "nice! you avoided a rick roll!"
+              : "oh no! you missed opening a perfectly safe link!"}
+          </div>
           <button
             className={classes(styles.button, styles.nextButton)}
             onClick={props.nextQuestion}
           >
             NEXT
           </button>
-          <div className={styles.explanation}>
-            {props.gameData.scanned && props.gameData.correct
-              ? "correct! that qr code was perfectly safe."
-              : props.gameData.scanned && !props.gameData.correct
-              ? "oh no! you've been rick rolled!"
-              : !props.gameData.scanned && props.gameData.correct
-              ? "nice work! you avoided a rick roll!"
-              : "oh no! that wasn't a rick roll!"}
-          </div>
         </div>
       ) : (
         <></>

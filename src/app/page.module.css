@@ -262,9 +262,10 @@ input.qrCodesJsonUpload {
 
 .explanation {
   width: 75%;
-  margin-top: 25px;
+  margin-top: 10px;
   font-style: italic;
   font-size: 1.25rem;
+  color: var(--gray);
 }
 
 /* Enable hover only on non-touch devices */

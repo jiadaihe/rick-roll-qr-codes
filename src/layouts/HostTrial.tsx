@@ -11,7 +11,7 @@ export default function HostTrial(props: HostTrialProps) {
 
   return (
     <div>
-      <div className={styles.topLeftTitle}>RICK OR ROLL</div>
+      <div className={styles.topLeftTitle}>QRICK QROLL</div>
       <div className={styles.centerContent}>
         <div className={styles.trialInnerContent}>
           <div className={styles.roundText}>ROUND {roundNumber}</div>
