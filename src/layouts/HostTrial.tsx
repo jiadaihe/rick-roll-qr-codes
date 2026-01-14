@@ -4,6 +4,7 @@ import QrCode from "@/components/QrCode";
 import Image from "next/image";
 import { useWindowSize } from "react-use";
 import Confetti from "react-confetti";
+import { useEffect, useRef } from "react";
 
 interface HostTrialProps {
   gameData: GameData;
@@ -12,11 +13,23 @@ interface HostTrialProps {
 export default function HostTrial(props: HostTrialProps) {
   const roundNumber = props.gameData.questionNumber || 1;
   const { width, height } = useWindowSize();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const guessed =
     props.gameData.scanned !== null && props.gameData.correct !== null;
   const isRickRoll =
     guessed && props.gameData.scanned === !props.gameData.correct;
+
+  useEffect(() => {
+    if (isRickRoll) {
+      if (!audioRef.current) {
+        audioRef.current = new Audio("/rick-roll.mp3");
+      }
+      audioRef.current.play().catch((error) => {
+        console.error("Failed to play audio:", error);
+      });
+    }
+  }, [isRickRoll]);
 
   return (
     <div>
