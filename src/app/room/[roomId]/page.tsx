@@ -76,7 +76,8 @@ export default function RoomPage({
     gameData?.gameState === GameState.READY_TO_START;
   const isInGame =
     gameData?.gameState == GameState.PENDING ||
-    gameData?.gameState === GameState.GUESSED;
+    gameData?.gameState === GameState.GUESSED ||
+    gameData?.gameState === GameState.GAME_OVER;
 
   if (!role) {
     return <Loading message={"loading..."} showTitle />;
@@ -91,7 +92,7 @@ export default function RoomPage({
         start={start}
       />
     ) : isInGame ? (
-      <HostTrial gameData={gameData} />
+      <HostTrial gameData={gameData} startOver={startOver} />
     ) : (
       <></>
     )

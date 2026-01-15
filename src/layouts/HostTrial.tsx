@@ -9,6 +9,7 @@ import { classes } from "@/lib/util";
 
 interface HostTrialProps {
   gameData: GameData;
+  startOver: () => void;
 }
 
 export default function HostTrial(props: HostTrialProps) {
@@ -40,47 +41,66 @@ export default function HostTrial(props: HostTrialProps) {
       <div className={styles.topLeftTitle}>QRICK QROLL</div>
       <div className={styles.hostTrialCenterContent}>
         <div className={styles.trialInnerContent}>
-          <div className={styles.roundText}>ROUND {roundNumber}</div>
-          <div className={styles.scoreContainer}>
-            {props.gameData.score} for{" "}
-            {roundNumber -
-              (props.gameData.gameState === GameState.GUESSED ? 0 : 1)}
-          </div>
-          {props.gameData.gameState === GameState.GUESSED && (
-            <div
-              className={classes(
-                styles.scoreContainer,
-                props.gameData.correct ? styles.correct : styles.incorrect
-              )}
-            >
-              {props.gameData.correct ? "CORRECT :D" : "INCORRECT >:("}
-            </div>
-          )}
-          {guessed && isRickRoll ? (
-            <div>
-              <Image
-                src={
-                  props.gameData.correct ? "/sad-rick.gif" : "/rick-roll.gif"
-                }
-                className={styles.rickBigScreen}
-                alt="Rick roll"
-                width={300}
-                height={300}
-              />
-            </div>
-          ) : guessed && !isRickRoll ? (
-            <div className={styles.iframeContainer}>
-              <iframe
-                className={styles.safeWebsite}
-                src={props.gameData.qrCodeData?.url}
-              />
-            </div>
-          ) : (
-            props.gameData.qrCodeData && (
-              <div className={styles.trialQrCodeContainer}>
-                <QrCode qrCodeData={props.gameData.qrCodeData} />
+          {props.gameData.gameState === GameState.GAME_OVER ? (
+            <>
+              <div className={styles.gameOverSubtitle}>YOUR SCORE</div>
+              <div className={styles.gameOverText}>
+                {props.gameData.score}/{roundNumber}
               </div>
-            )
+              <button
+                className={classes(styles.button, styles.startOverButton)}
+                onClick={props.startOver}
+              >
+                START OVER
+              </button>
+            </>
+          ) : (
+            <>
+              <div className={styles.roundText}>ROUND {roundNumber}</div>
+              <div className={styles.scoreContainer}>
+                {props.gameData.score} for{" "}
+                {roundNumber -
+                  (props.gameData.gameState === GameState.GUESSED ? 0 : 1)}
+              </div>
+              {props.gameData.gameState === GameState.GUESSED && (
+                <div
+                  className={classes(
+                    styles.scoreContainer,
+                    props.gameData.correct ? styles.correct : styles.incorrect
+                  )}
+                >
+                  {props.gameData.correct ? "CORRECT :D" : "INCORRECT >:("}
+                </div>
+              )}
+              {guessed && isRickRoll ? (
+                <div>
+                  <Image
+                    src={
+                      props.gameData.correct
+                        ? "/sad-rick.gif"
+                        : "/rick-roll.gif"
+                    }
+                    className={styles.rickBigScreen}
+                    alt="Rick roll"
+                    width={300}
+                    height={300}
+                  />
+                </div>
+              ) : guessed && !isRickRoll ? (
+                <div className={styles.iframeContainer}>
+                  <iframe
+                    className={styles.safeWebsite}
+                    src={props.gameData.qrCodeData?.url}
+                  />
+                </div>
+              ) : (
+                props.gameData.qrCodeData && (
+                  <div className={styles.trialQrCodeContainer}>
+                    <QrCode qrCodeData={props.gameData.qrCodeData} />
+                  </div>
+                )
+              )}
+            </>
           )}
         </div>
       </div>

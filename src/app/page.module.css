@@ -277,6 +277,13 @@ input.qrCodesJsonUpload {
   margin-top: 25px;
 }
 
+.startOverButton {
+  width: 75%;
+  max-width: 300px;
+  font-size: 1.5rem;
+  margin-top: 25px;
+}
+
 .rickFeedback {
   width: 75%;
   height: unset;
@@ -321,6 +328,16 @@ input.qrCodesJsonUpload {
 .guesserFeedbackText {
   font-size: 2rem;
   margin-bottom: 20px;
+}
+
+.gameOverText {
+  font-size: clamp(5rem, 10vw, 8rem);
+  font-weight: bold;
+  font-style: italic;
+}
+
+.gameOverSubtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
 .guesserScreenOuterContainer {

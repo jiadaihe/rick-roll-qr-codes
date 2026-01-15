@@ -38,7 +38,12 @@ export default function GuesserScreen(props: GuesserScreenProps) {
           QRICK QROLL
         </div>
         {props.gameData.gameState === GameState.GAME_OVER ? (
-          <div className={styles.finalScore}>{props.gameData.score}</div>
+          <div className={styles.centerContent}>
+            <div className={styles.gameOverSubtitle}>YOUR SCORE</div>
+            <div className={styles.gameOverText}>
+              {props.gameData.score}/{props.gameData.questionNumber || 20}
+            </div>
+          </div>
         ) : props.gameData.gameState === GameState.PENDING ? (
           <div className={styles.centerContent}>
             <div className={styles.qrScannerInnerContainer}>
