@@ -323,6 +323,11 @@ input.qrCodesJsonUpload {
   margin-bottom: 20px;
 }
 
+.guesserScreenOuterContainer {
+  width: 100%;
+  max-width: 500px;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {
