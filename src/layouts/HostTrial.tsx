@@ -33,6 +33,13 @@ export default function HostTrial(props: HostTrialProps) {
     }
   }, [isRickRoll]);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }, [roundNumber]);
+
   return (
     <div className={styles.hostTrialContainer}>
       {guessed && props.gameData.correct && (

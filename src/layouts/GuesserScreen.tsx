@@ -14,12 +14,6 @@ interface GuesserScreenProps {
 export default function GuesserScreen(props: GuesserScreenProps) {
   const [codeToScan, setCodeToScan] = useState(false);
 
-  useEffect(() => {
-    if (props.gameData.scanned && !props.gameData.correct) {
-      window.open("https://www.youtube.com/watch?v=xvFZjo5PgG0", "_blank");
-    }
-  }, [props.gameData]);
-
   const nextQuestion = () => {
     setCodeToScan(false);
     props.nextQuestion();
