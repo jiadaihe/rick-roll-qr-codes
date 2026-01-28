@@ -73,6 +73,8 @@ export default class Server implements Party.Server {
   }
 
   onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
+    console.log(`Connected: ${conn.id} to room ${this.room.id}`);
+
     // If this is the first connection, they become the creator
     if (this.gameData.creator === null) {
       this.gameData.creator = conn.id;
@@ -100,6 +102,7 @@ export default class Server implements Party.Server {
       if (Array.isArray(qrCodes) && qrCodes.length > 0) {
         this.safeQrCodeSampler = new Sampler(qrCodes);
         this.gameData.numSafeQrCodesUploaded = qrCodes.length;
+
         // If we have both a player and QR codes, we're ready to start
         if (this.isReadyToStart()) {
           this.gameData.gameState = GameState.READY_TO_START;
