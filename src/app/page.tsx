@@ -21,7 +21,7 @@ export default function RoomsPage() {
 
   return (
     <div className={styles.pageOuterContainer} style={y2kStyles.outer}>
-
+      <div className={styles.win95Saver} />
       <div style={y2kStyles.retroSun} />
       <div style={y2kStyles.gridOverlay} />
 
@@ -87,6 +87,7 @@ export default function RoomsPage() {
 }
 
 const y2kStyles = {
+  
   outer: {
     backgroundColor: "#000080", // Classic Navy Blue
     backgroundImage: `linear-gradient(180deg, #000080 0%, #ff00ff 100%)`,
