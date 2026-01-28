@@ -82,15 +82,27 @@ export default function RoomsPage() {
         alt="CD Player"
         style={{
           position: "absolute",
-          top: "300px",
-          left: "400px",
+          top: "750px",
+          left: "380px",
           width: 320,
           height: 180,
           display: "block",
           margin: "0 auto",
         }}
       />
-
+      <img
+        src={"/oh-no.jpg"}
+        alt="damn"
+        style={{
+          position: "absolute",
+          top: "670px",
+          left: "715px",
+          width: 150,
+          height: 70,
+          display: "block",
+          margin: "0 auto",
+        }}
+      />
       <div
         style={{
           position: "absolute",
@@ -115,7 +127,7 @@ export default function RoomsPage() {
             boxShadow: "inset 2px 2px #fff, inset -2px -2px #808080",
             fontFamily: "MS Sans Serif, Arial, sans-serif",
             marginBottom: "auto",
-            transform: "translateX(200px)",
+            transform: "translateX(250px) translateY(-60px)",
           }}
         >
           
@@ -128,7 +140,7 @@ export default function RoomsPage() {
               backgroundColor: "#000080", // Win95 dark blue
               color: "#fff",
               padding: "0px 6px",
-              height: "2.2em",
+              height: "1.5em",
               
               // fontSize: "12px",
               fontSize: "clamp(1rem, 3vw, 2rem)",
@@ -145,14 +157,21 @@ export default function RoomsPage() {
             <button
               aria-label="Close"
               style={{
-                width: "16px",
-                height: "16px",
+                height: "1.25em",
+                width: "1.25em",
+
                 backgroundColor: "#c0c0c0",
                 border: "2px solid #000",
                 boxShadow: "inset 1px 1px #fff, inset -1px -1px #808080",
-                fontSize: "10px",
-                lineHeight: "10px",
+
+                fontSize: "0.9em",
+                lineHeight: "1",
                 padding: 0,
+
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+
                 cursor: "pointer",
                 fontFamily: "MS Sans Serif, Arial, sans-serif",
               }}
